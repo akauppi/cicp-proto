@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- /index.html
+
+For showing information that needs authentication. If the user is not authenticated, they will get forwarded to
+login page, and back here after successful login.
+-->
+<head>
+  <meta charset="utf-8">
+  <title>CICP simple tester - main page</title>
+</head>
+<body>
+
+<!-- Google CICP:
+  "Copy and paste the snippet below at the bottom of your HTML, before other script tags."
+-->
+<script src="https://www.gstatic.com/firebasejs/5.7.2/firebase.js"></script>
+<script>
+  var config = {
+    apiKey: "AIzaSyAHXYOwmdVdU7vWN0pOnMkwgx_5kx2qab0",
+    authDomain: "asu-181118.firebaseapp.com",
+  };
+  firebase.initializeApp(config);
+</script>
+<!-- end of Google CICP -->
+
+<p>You are: XXX, userid YYY</p>
+</body>
