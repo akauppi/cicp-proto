@@ -1,0 +1,19 @@
+{
+  "name": "cicp-proto",
+  "version": "0.0.0",
+  "description": "[WIP] Prototype for authentication with Google CICP",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/akauppi/cicp-proto.git"
+  },
+  "author": "Asko Kauppi",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/akauppi/cicp-proto/issues"
+  },
+  "homepage": "https://github.com/akauppi/cicp-proto#readme"
+}
