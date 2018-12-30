@@ -4,7 +4,8 @@
   "description": "[WIP] Prototype for authentication with Google CICP",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev:serve": "nodemon --ignore sessions/ server.js"
   },
   "repository": {
     "type": "git",
@@ -15,5 +16,11 @@
   "bugs": {
     "url": "https://github.com/akauppi/cicp-proto/issues"
   },
-  "homepage": "https://github.com/akauppi/cicp-proto#readme"
+  "homepage": "https://github.com/akauppi/cicp-proto#readme",
+  "dependencies": {
+    "express": "^4.16.4"
+  },
+  "devDependencies": {
+    "nodemon": "^1.18.9"
+  }
 }

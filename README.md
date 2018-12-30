@@ -20,6 +20,15 @@ Authentication needs are slightly app specific. Here's our chosen playing field.
 	- If already logged in, one gets directly to the page.
 	- If not logged in, one should eventually land in that view; this is a no-brainer but there are web apps that take one to a default page, instead.
 
+## Path
+
+Decided to not go [this way](https://medium.com/@evangow/server-authentication-basics-express-sessions-passport-and-curl-359b7456003d) (blog Oct 2017), since it gets complicated and needs a database. We want to store a JWT token in a session cookie.
+
+Then [this](https://www.codementor.io/mayowa.a/how-to-build-a-simple-session-based-authentication-system-with-nodejs-from-scratch-6vn67mcy3) (blog Apr 2017) 
+
+Then [this](https://paweljw.github.io/2017/09/vue.js-front-end-app-part-3-authentication/) (blog Sep 2017)
+
+
 ## Requirements
 
 ...
