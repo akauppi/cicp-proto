@@ -3,11 +3,13 @@ package backend
 import akka.http.scaladsl.server.Route
 import akka.http.scaladsl.server.Directives._
 
-object SomethingRoute {
+object TokenRoute {
   val route: Route = {
 
-    (get & pathSingleSlash) {
-      complete("OK!")
+    (post & path("token")) {
+
+      // Provide a Google CICP token
+      ???
     }
   }
 }

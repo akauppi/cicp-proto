@@ -1,6 +1,8 @@
 # Todo
 
 - Getting this to work
-- Adding SAML to it
 
+<!--
+ - Remember to try "One tap sign-up": https://github.com/firebase/firebaseui-web
+-->
  

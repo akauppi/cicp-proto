@@ -18,7 +18,7 @@ object Main extends App with LazyLogging {
   implicit val mat: Materializer = ActorMaterializer()
   import as.dispatcher    // ExecutionContext
 
-  Http().bindAndHandle( SomethingRoute.route, interface, port )
+  Http().bindAndHandle( TokenRoute.route, interface, port )
 
   logger.info(s"Running at http://$interface:$port")
 }
