@@ -4,11 +4,9 @@ Simple proof-ground of how Google [Cloud Identity for Customers and Partners](ht
 
 Intentionally omits any web framework.
 
-<!-- is this still relevant?
-Based off the [Firenotes](https://github.com/GoogleCloudPlatform/python-docs-samples/tree/master/appengine/standard/firebase/firenotes) (GitHub) Google-provided sample, but unlike that one:
+Based on the [Firenotes](https://github.com/GoogleCloudPlatform/python-docs-samples/tree/master/appengine/standard/firebase/firenotes) (GitHub) Google-provided sample, but unlike that one:
 
 - login handled on a separate page (in Firenote's `index.html`, there are two "logged in" and "logged out" sections)
--->
 
 ## Aim
 
@@ -60,26 +58,36 @@ Picked this project up in Aug 2019. [...]
 - `npm`
 - `sbt`
 
-### Your config
 
-Create the file `static/config.js` that provides:
+### Firebase project
 
-```
-var API_KEY = "AIza...qab0";
-var AUTH_DOMAIN = "<your-project>.firebaseapp.com";
+Create a project in the Firebase console.
 
-// Google OAuth Client ID, needed to support One-tap sign-up.
-//
-// You see this in: GCP Console > APIs & Services > Credentials > "Web client (Auto-created for Google Sign-in)"
-//
-// Note: There were two other client id's on that page. Not sure if it matters, which one to pick.
-//
-var CLIENT_ID = '3145...e8fm.apps.googleusercontent.com';
-```
+Enable the following authentication mechanisms for it:
 
-> <font color=red>tbd. How secret are these? We do end up hosting them along the page.</font>
+<!-- this didn't work as we wanted - see TODO
+- [Email link authentication](https://firebase.google.com/docs/auth/web/email-link-auth)
+-->
+- [Google sign-in](https://firebase.google.com/docs/auth/web/google-signin)
+- [GitHub](https://firebase.google.com/docs/auth/web/github-auth)
 
+<!-- my outlook.com was tied to another organization (joined a Teams); wasn't able to fulfill the instructions. Retry after Teams access is gone. 5-Aug-2019
+- [Microsoft](https://firebase.google.com/docs/auth/web/microsoft-oauth)
+--> 
 
+Pick the configuration entry from [Firebase console](https://console.firebase.google.com) > (project) > `Project Settings` > `Web apps`[^2] to `static/index.html`.
+
+[^2]: create an app if needed
+
+<!-- disabled
+---
+
+Microsoft needs something like this:
+
+<i>To begin building apps that sign in social and local accounts, you'll need to create an Azure AD B2C tenant. To begin, follow creating an Azure AD B2C tenant.</i> [source](https://docs.microsoft.com/en-us/azure/active-directory/develop/quickstart-create-new-tenant)
+
+---
+-->
 
 ## Getting started
 
@@ -132,6 +140,8 @@ Ideally, we wish to componentalize the authentication so it's really, really eas
 - [CICP Quickstart](https://cloud.google.com/identity-platform/docs/quickstart-cicp) (Google Cloud documentation)
 - Cloud Identity for Customers and Partners > Concepts > [Authentication](https://cloud.google.com/identity-cp/docs/concepts-authentication)
   - good intro to what CICP wants to be
+- [Easily add sign-in to your Web app with FirebaseUI](https://firebase.google.com/docs/auth/web/firebaseui) (Firebase docs)
 - [firebaseui-web](https://github.com/firebase/firebaseui-web) (GitHub)
-  - CICP really is mostly Firebase, so this applies.
+
+CICP really is mostly Firebase UI/auth.
 
