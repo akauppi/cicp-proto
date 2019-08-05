@@ -25,6 +25,11 @@ Note: Latest Firebase versions can be seen at:
   <script src="https://cdn.firebase.com/libs/firebaseui/4.1.0/firebaseui.js"></script>
   <link type="text/css" rel="stylesheet" href="https://cdn.firebase.com/libs/firebaseui/4.1.0/firebaseui.css" />
 
+  <!-- From https://firebase.google.com/docs/web/setup#add_firebase_to_your_app
+  -->
+  <script src="https://www.gstatic.com/firebasejs/6.3.4/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/6.3.4/firebase-auth.js"></script>
+
   <!-- disabled (this is how CICP instructs)
   - From https://cloud.google.com/identity-platform/docs/quickstart-cicp
   --
@@ -61,13 +66,12 @@ Note: Latest Firebase versions can be seen at:
 <body>
 <!-- Initialize the Firebase auth
 -->
-<script src="config.js"></script>
+<script src="config.js"></script>   <!-- defines API_KEY, AUTH_DOMAIN, CLIENT_ID as globals -->
 <script>
-  var config = {
+  firebase.initializeApp( {
     apiKey: API_KEY,
     authDomain: AUTH_DOMAIN,
-  };
-  firebase.initializeApp(config);
+  } );
 </script>
 
 <!-- Google CICP login widget -->

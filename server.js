@@ -5,6 +5,13 @@
 // References:
 //  - https://stackoverflow.com/questions/6084360/using-node-js-as-a-simple-web-server
 //
-require('http')
-    .createServer( require('serve-static')('.') )
-    .listen(3000)
+const app = require('http').createServer(
+    require('serve-static')('static', { 'index': ['index.html'] })
+)
+
+const PORT = process.env.PORT || 8081;
+
+app.listen(PORT, () => {
+    console.log(`Serving static pages on port ${PORT}`);
+});
+
