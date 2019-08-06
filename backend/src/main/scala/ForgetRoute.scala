@@ -3,13 +3,16 @@ package backend
 import akka.http.scaladsl.server.Route
 import akka.http.scaladsl.server.Directives._
 
-object TokenRoute {
+import FirebaseAuth._
+
+object ForgetRoute {
   val route: Route = {
 
-    (post & path("token")) {
+    (put & path("forget")) {
+      firebaseAuth { userId =>
 
-      // Provide a Google CICP token
-      ???
+        ???
+      }
     }
   }
 }

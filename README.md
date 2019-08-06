@@ -65,9 +65,7 @@ Create a project in the Firebase console.
 
 Enable the following authentication mechanisms for it:
 
-<!-- this didn't work as we wanted - see TODO
 - [Email link authentication](https://firebase.google.com/docs/auth/web/email-link-auth)
--->
 - [Google sign-in](https://firebase.google.com/docs/auth/web/google-signin)
 - [GitHub](https://firebase.google.com/docs/auth/web/github-auth)
 
@@ -89,9 +87,42 @@ Microsoft needs something like this:
 ---
 -->
 
+
+---
+
+**Note about Firebase tiers**
+
+At the [Firebase console](https://console.firebase.google.com) > (your project), check what the lower left edge states. 
+
+![](.images/firebase-blaze.png)
+
+If it's "Blaze", you may consider changing to a free tier. Not sure if this affects the service-side use or not (validation of tokens when deployed to Google cloud). Please tell.
+
+
+---
+
+### Firebase service account (admin)
+
+For the `backend` service to be able to talk to Firebase (e.g. validate users' identities), you need a configuration file with your service account's credentials.
+
+- Visit [Add the Firebase Admin SDK to Your Server](https://firebase.google.com/docs/admin/setup/) (Firebase docs) and read the instructions.
+
+- Visit [Firebase Console](https://console.firebase.google.com) > (your project) > (your app) > `Settings` > Service accounts > `Generate new private key`.
+
+   - Pick up the private key file and place it in `backend/secrets/<name-it>.json`
+
+We'll show you later how to provide that secrets file to the backend, so it can do its work. 
+
+<!-- tbd. Add something like this once deployed:
+Note that once deployed to Google ecosystem, authentication happens automatically ... 
+-->
+
+
 ## Getting started
 
-For things to work locally, we need to serve both the static files in `static/` (at port 8081) and the REST API (port 8082). 
+For things to work locally, we need to serve both the static files in `static/` (at port 8081)[^3] and the REST API (port 8082). 
+
+[^3]: Firebase authentication does not work if you just open the `index.html` file. Instead, we serve it.
 
 1. Launch the static pages (this will watch for changes, so it's kind of dynamic after all):
 
@@ -101,26 +132,36 @@ For things to work locally, we need to serve both the static files in `static/` 
    $ PORT=8081 npm run serve-static
    ```
 
+   The port you choose here only matters to where you point your browser.
+   
 2. Compile and launch the REST API:
 
    ```
-   # in a separate terminal
+   # in yet another terminal
    $ cd back-end
    $ PORT=8082 sbt run
    ```
 
-Note: If you use another port for the backend, adjust also `static/index.html`.
+   This port matters more. If you choose another, also adjust `static/index.html`.
 
-Now, open [http://localhost:8081](http://localhost:8081).
+3. Open [http://localhost:8081](http://localhost:8081)
 
+   You should see a browser asking you to log in.
+   
+   ![](.images/tbd.png)
 
+4. Log in with one or multiple accounts (ask your friend to help?). 
 
+   ![](.images/tbd.png)
 
+	If you see the "others" list updated, the whole chain from browser -> Firebase auth -> backend -> Firebase Admin API and back works.
+	
+	If you have problems, please report to the [GitHub repo](http://github.com/akauppi/cicp-proto) as issues. :)
 
-
-### Note: just opening `index.html` won't work
 
 ---
+
+Note: 
 
 >Firebase and FirebaseUI do not work when executed directly from a file (i.e. opening the file in your browser, not through a web server). Always run firebase serve (or your preferred local server) to test your app locally.
 [source](https://github.com/firebase/firebaseui-web)
@@ -128,11 +169,46 @@ Now, open [http://localhost:8081](http://localhost:8081).
 ---
 
 
+## Customizing
+
+The basic framework is here. You can obviously change it to match your app, but this should get you going...
+
+<!-- tbd. later
+Also worth checking may be:
+
+- [Firebase Realtime Database](...)
+- [Cloud Firestore](...)
+
+-->
+
+
+## Deployment
+
+*Disclaimer:* If the code works on your local machine, you can obviously deploy it in any cloud. Google and Firebase have some options for this. This is just a pick, but may help you further.
+
+
+
+<font color=red>...tbd...</font>
+
+
+
+<!-- Later:
+
+- monitoring
+- alerts
+-->
+
+
 ## Further work
 
-### Component implementation
+### User permissions
 
-Ideally, we wish to componentalize the authentication so it's really, really easy to add.
+>The Firebase Admin SDK lets you set custom attributes on user accounts. With custom user claims, you can give users different levels of access (roles), which are then enforced in an application's security rules.
+[source](https://firebase.google.com/docs/auth/admin/)
+
+That means we can do some kind of roles management with Firebase (who can access what, e.g. making some people admins of their groups).
+
+( Also Firebase Admin API states something about roles. )
 
 
 ## References
@@ -142,6 +218,7 @@ Ideally, we wish to componentalize the authentication so it's really, really eas
   - good intro to what CICP wants to be
 - [Easily add sign-in to your Web app with FirebaseUI](https://firebase.google.com/docs/auth/web/firebaseui) (Firebase docs)
 - [firebaseui-web](https://github.com/firebase/firebaseui-web) (GitHub)
+- [Introduction to the Admin Auth API](https://firebase.google.com/docs/auth/admin/) (Firebase docs)
 
 CICP really is mostly Firebase UI/auth.
 

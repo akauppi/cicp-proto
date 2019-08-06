@@ -33,11 +33,15 @@ val akkaHttpTestkit = "com.typesafe.akka" %% "akka-http-testkit" % akkaHttpVer %
 
 //val akkaHttpCirce = "de.heikoseeberger" %% "akka-http-circe" % "1.20.0"
 
+val firebaseAdmin = "com.google.firebase" % "firebase-admin" % "6.9.0"
+
 val scalaTest = "org.scalatest" %% "scalatest" % "3.0.8" % Test
 
 libraryDependencies ++= Seq(
   //akkaActor,
   akkaStream,
   akkaHttp,
+  firebaseAdmin,
+    //
   scalaTest
 )

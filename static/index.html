@@ -16,6 +16,7 @@
 <head>
   <title>CICP proto</title>
   <meta charset="utf-8">
+  <link type="text/css" rel="stylesheet" href="./style.css" />
 
   <!-- From https://cloud.google.com/identity-platform/docs/quickstart-cicp
   -->
@@ -27,16 +28,19 @@
 <div id="logged-in" hidden="true">
   <h1>CICP proto</h1>
 
-  <p>You are logged in as:</p>
-  <div id="account-details"></div>
+  <p>You are logged in as: <span id="me"></span></p>
 
-  <button id="log-out" style="padding: 20px; margin-top: 10px">Log out</button>
-  <button id="forget" style="padding: 20px">Forget me!</button>    <!-- removes the id from the server -->
+  <p>Others:</p>
+  <ul id="others">  <!-- filled in from server -->
+  </ul>
+
+  <button id="log-out">Log out</button>
+  <button id="forget">Forget me!</button>    <!-- removes the id from the server -->
 </div>
 
-<div id="logged-out">
+<div id="logged-out" hidden="true">
   <h1>CICP proto</h1>
-  <p>Welcome. Please log in with the identity provider of your choice.</p>
+  <p>Please log in with the identity provider of your choice.</p>
   <div id="firebaseui-auth-container"></div>
 </div>
 
@@ -67,8 +71,6 @@
   // Firebase log-in widget
   //
   const ui = new firebaseui.auth.AuthUI( firebase.auth() );
-
-  console.log("UI initialized");
 
   // "To use FirebaseUI to authenticate users you first need to configure each provider you want to use in their own
   // developer app settings."
@@ -159,6 +161,9 @@
   const $loggedOut = document.querySelector("#logged-out");
   const $loggedIn = document.querySelector("#logged-in");
 
+  const $me = document.querySelector("#me");
+  const $others = document.querySelector("#others");
+
   /*
   * Call to initiate the login functionality
   */
@@ -180,26 +185,35 @@
         $loggedOut.hidden = true;
 
         // signed in
-        var displayName = user.displayName;
-        var email = user.email;
-        var emailVerified = user.emailVerified;
-        var photoURL = user.photoURL;
-        var uid = user.uid;
-        var phoneNumber = user.phoneNumber;
-        var providerData = user.providerData;
-        user.getIdToken().then( function(accessToken) {
-          document.getElementById('account-details').textContent = JSON.stringify({
+        const displayName = user.displayName;
+        const email = user.email;
+        const emailVerified = user.emailVerified;
+        const photoURL = user.photoURL;
+        const uid = user.uid;
+        //var phoneNumber = user.phoneNumber;
+        //var providerData = user.providerData;
+
+        user.getIdToken().then( (accessToken) => {
+          console.log( "Logged in as: "+ JSON.stringify({
             displayName: displayName,
             email: email,
             emailVerified: emailVerified,
-            phoneNumber: phoneNumber,
+            //phoneNumber: phoneNumber,
             photoURL: photoURL,
             uid: uid,
             accessToken: accessToken,
-            providerData: providerData
-          }, null, '  ');
+            //providerData: providerData    // looks like debugging data; duplicates from above but can e.g. reveal multiple identities (Google and GitHub)
+          }, null, '  '));
 
-          $loggedIn.hidden = false;
+          $me.textContent = `${displayName} (${email})`;
+
+          // Update and fetch others
+          //
+          fetchOthers(accessToken).then( (arr) => {
+            alert(arr)    // tbd. update '#others'
+          });
+
+          $loggedIn.hidden = false;   // can be shown before the "others" list has been updated
         });
       } else {
         // signed out
@@ -222,19 +236,55 @@
   const $logout = document.querySelector("button#log-out");
   const $forgetMe = document.querySelector("button#forget");
 
-  $logout.onclick = (ev) => {
-    alert("British Bee!")
+  const backend = "http://localhost:8081"   // "/others" (GET), "/forget" (PUT)
+
+  /*
+  * Fetch the visitors known to the back-end.
+  *
+  * Adds us as one, based on the token.
+  */
+  async function fetchOthers(token) {   // -> [ userName, ... ]
+
+    fetch(`${backend}/others`, {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+      }
+    })
+    .then( resp => resp.json() )    // assumes a 200; see for error checking -> https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch
+    .catch(err => console.error("GET to 'others' failed:", err))
+  }
+
+  /*
+  * Remove us from the visitors.
+  */
+  async function fetchForget(token) {   // -> nada
+
+    fetch(`${backend}/forget`, {
+      method: 'PUT',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+      }
+    })
+    .then( resp => null )   // assumes a 200
+    .catch(err => console.error("PUT to 'forget' failed:", err))
+  }
+
+  function logout(forget /*Boolean*/) {
 
     firebase.auth().signOut().then( () => {
-      console.log("Signed out")
-    }).catch( () => {
-      alert("Sign-out failed!")
-    });
-  };
+      console.log("Signed out");
 
-  $forgetMe.onclick = (ev) => {
-    alert("USB");
+      if (forget) {
+        // tbd. ask server to forget about us
+      }
+    }).catch( () => {
+      alert("Sign-out failed!");
+    });
   }
+
+  $logout.onclick = (ev) => logout(false);
+  $forgetMe.onclick = (ev) => logout(true);
 </script>
 
 </body>

@@ -1,0 +1,14 @@
+/*
+* style.css
+*/
+
+/* */
+button {
+    padding: 20px;
+    margin-top: 10px
+}
+
+#logged-out {
+    text-align: center;
+}
+
