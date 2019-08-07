@@ -1,18 +1,26 @@
 package backend
 
-import akka.http.scaladsl.server.Route
 import akka.http.scaladsl.server.Directives._
 
-import FirebaseAuth._
+import FirebaseAuthenticator._
+import tools.AnyRoute
 
-object ForgetRoute {
-  val route: Route = {
+trait ForgetRoute extends AnyRoute {
+  import ForgetRoute._
 
-    (put & path("forget")) {
-      firebaseAuth { userId =>
+  protected def forgetMe(o: UserInfo): Unit
 
-        ???
-      }
+  override
+  val route = (put & path("forget")) {
+    authenticateFirebaseAsync(realm) { fbt =>
+      val userInfo = UserInfo(fbt)
+      forgetMe(userInfo)
+      complete(200, s"removed: ${userInfo.displayName}")    // text doesn't matter
     }
   }
+}
+
+object ForgetRoute {
+  private
+  val realm: String = "public"    // tbd. what should be here?
 }

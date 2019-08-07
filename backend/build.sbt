@@ -21,8 +21,7 @@ libraryDependencies ++= Seq(
 )
 
 val akkaVer = "2.5.23"
-//val akkaActor = "com.typesafe.akka" %% "akka-actor" % akkaVer
-val akkaStream = "com.typesafe.akka" %% "akka-stream" % akkaVer
+//val akkaStream = "com.typesafe.akka" %% "akka-stream" % akkaVer
 
 val akkaHttpVer = "10.1.9"
 val akkaHttp = "com.typesafe.akka" %% "akka-http" % akkaHttpVer
@@ -31,16 +30,15 @@ val akkaHttpTestkit = "com.typesafe.akka" %% "akka-http-testkit" % akkaHttpVer %
 //val circeVersion = "0.9.2"
 //val circeGeneric = "io.circe" %% "circe-generic" % circeVersion   // @JsonCodec
 
-//val akkaHttpCirce = "de.heikoseeberger" %% "akka-http-circe" % "1.20.0"
+val akkaHttpCirce = "de.heikoseeberger" %% "akka-http-circe" % "1.20.0"
 
 val firebaseAdmin = "com.google.firebase" % "firebase-admin" % "6.9.0"
 
 val scalaTest = "org.scalatest" %% "scalatest" % "3.0.8" % Test
 
 libraryDependencies ++= Seq(
-  //akkaActor,
-  akkaStream,
   akkaHttp,
+  akkaHttpCirce,
   firebaseAdmin,
     //
   scalaTest
