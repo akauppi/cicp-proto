@@ -123,7 +123,7 @@ For things to work locally, we need to serve both the static files in `static/` 
 1. Launch the static pages (this will watch for changes, so it's kind of dynamic after all):
 
    ```
-   # in a separate terminal
+   # in a first terminal (leave running..)
    $ npm install
    $ PORT=8081 npm run serve-static
    ```
@@ -133,7 +133,7 @@ For things to work locally, we need to serve both the static files in `static/` 
 2. Compile and launch the REST API:
 
    ```
-   # in yet another terminal
+   # in a second terminal (leave running..)
    $ cd back-end
    $ PORT=8082 sbt run
    ```
@@ -164,6 +164,134 @@ Note:
 
 ---
 
+So far, we have *not* needed a dedicated Firebase CLI (`firebase`). If you have it, you can use it to e.g. serve the local content but the point was made that this is optional.
+
+Since setting up `firebase` means granting access to your Google account, you might want to avoid it. But in the next chapter we dive in, using `firebase` to host the frontend - and the backend - in the cloud, for anyone to see.
+
+
+## Deployment
+
+If the code works on your local machine, you can obviously deploy it in any cloud. Google and Firebase have some options for this. This is just a pick, but may help you. Firebase does offer a one-stop-shop for taking care of all your cloud needs.
+
+
+### Setting up `firebase` CLI
+
+Based on: [Get Started with Firebase Hosting](https://firebase.google.com/docs/hosting/quickstart) (Firebase docs)
+
+**Install `firebase`**
+
+```
+$ npm install -g firebase-tools
+$ firebase --version
+7.2.2
+```
+
+To grant `firebase` access:
+
+```
+$ firebase login
+```
+
+![](.images/firebase-login.png)
+
+<!-- tbd. 
+Firebase CLI stores access information in ...
+
+(resolve so that we know how easy it would be for a third party code to scrape them)
+-->
+
+**Configure for the project**
+
+The project has already been configured (output files are in the version control), but here's how you'd do it:
+
+```
+$ firebase init
+...
+? Which Firebase CLI features do you want to set up for this folder? Press Space to select features, then Enter to confirm your choices. 
+◯ Database: Deploy Firebase Realtime Database Rules
+◯ Firestore: Deploy rules and create indexes for Firestore
+◯ Functions: Configure and deploy Cloud Functions
+◉ Hosting: Configure and deploy Firebase Hosting sites
+◯ Storage: Deploy Cloud Storage security rules
+```
+
+You only need to pick `Hosting` for now.
+
+When asked this:
+
+```
+? What do you want to use as your public directory? static
+```
+
+.. give `static` as the public folder (we could also rename it `public`).
+
+
+### Publishing the frontend
+
+```
+ $ firebase deploy
+
+=== Deploying to 'cicp-proto-240219'...
+
+i  deploying database, hosting
+i  database: checking rules syntax...
+✔  database: rules syntax for database cicp-proto-240219 is valid
+i  hosting[cicp-proto-240219]: beginning deploy...
+i  hosting[cicp-proto-240219]: found 3 files in static
+✔  hosting[cicp-proto-240219]: file upload complete
+i  database: releasing rules...
+✔  database: rules for database cicp-proto-240219 released successfully
+i  hosting[cicp-proto-240219]: finalizing version...
+✔  hosting[cicp-proto-240219]: version finalized
+i  hosting[cicp-proto-240219]: releasing new version...
+✔  hosting[cicp-proto-240219]: release complete
+
+✔  Deploy complete!
+
+Project Console: https://console.firebase.google.com/project/cicp-proto-240219/overview
+Hosting URL: https://cicp-proto-240219.firebaseapp.com
+```
+
+Is that **it???**
+
+This has opened a `Develop` section in your Firebase (online) console. That's neat!
+
+Visit the "Hosting URL" link to see if your page is up. e.g. [sample](https://cicp-proto-240219.firebaseapp.com)
+
+If you dive further, the UI will of course fail once you get in. There's no backend running that you can reach. Let's fix that!
+
+
+### Publishing the backend
+
+Since we use Scala (and not node.js) for the backend, we'll need to build a Docker image first and then deploy it via Cloud Run.
+
+>Note: We expect you to have Docker installed, and running. (this should be mentioned in the requirements)
+
+**Build the Docker image**
+
+The backend code is prepared. :) [^9]
+
+[^9]: We're using an approach where Sbt native packager's `stage` target is used for bringing the jars etc. together, and a normal `Dockerfile` to bake them into an image. There are plenty of other approaches, but this feels best since we get hands-on access to the `Dockerfile`. :)
+
+```
+$ cd backend
+$ sbt stage
+...
+$ docker build .
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 ## Customizing
 
@@ -172,20 +300,8 @@ The basic framework is here. You can obviously change it to match your app, but 
 <!-- tbd. later
 Also worth checking may be:
 
-- [Firebase Realtime Database](...)
 - [Cloud Firestore](...)
-
 -->
-
-
-## Deployment
-
-*Disclaimer:* If the code works on your local machine, you can obviously deploy it in any cloud. Google and Firebase have some options for this. This is just a pick, but may help you further.
-
-
-
-<font color=red>...tbd...</font>
-
 
 
 <!-- Later:
