@@ -68,25 +68,21 @@ Enable the following authentication mechanisms for it:
 - [Email link authentication](https://firebase.google.com/docs/auth/web/email-link-auth)
 - [Google sign-in](https://firebase.google.com/docs/auth/web/google-signin)
 - [GitHub](https://firebase.google.com/docs/auth/web/github-auth)
-
-<!-- my outlook.com was tied to another organization (joined a Teams); wasn't able to fulfill the instructions. Retry after Teams access is gone. 5-Aug-2019
 - [Microsoft](https://firebase.google.com/docs/auth/web/microsoft-oauth)
---> 
 
 Pick the configuration entry from [Firebase console](https://console.firebase.google.com) > (project) > `Project Settings` > `Web apps`[^2] to `static/index.html`.
 
 [^2]: create an app if needed
 
-<!-- disabled
 ---
 
-Microsoft needs something like this:
+**Registering an app at Azure**
 
-<i>To begin building apps that sign in social and local accounts, you'll need to create an Azure AD B2C tenant. To begin, follow creating an Azure AD B2C tenant.</i> [source](https://docs.microsoft.com/en-us/azure/active-directory/develop/quickstart-create-new-tenant)
+Using Microsoft login requires one to register an application in Azure. It's not too bad and the Firebase / Microsoft instructions [^88] lead well. 
 
----
--->
+[^88]: https://docs.microsoft.com/fi-fi/azure/active-directory/develop/quickstart-register-app
 
+One nice feature is that you can log into Azure Portal using GitHub credentials.
 
 ---
 
@@ -216,9 +212,10 @@ That means we can do some kind of roles management with Firebase (who can access
 - [CICP Quickstart](https://cloud.google.com/identity-platform/docs/quickstart-cicp) (Google Cloud documentation)
 - Cloud Identity for Customers and Partners > Concepts > [Authentication](https://cloud.google.com/identity-cp/docs/concepts-authentication)
   - good intro to what CICP wants to be
-- [Easily add sign-in to your Web app with FirebaseUI](https://firebase.google.com/docs/auth/web/firebaseui) (Firebase docs)
 - [firebaseui-web](https://github.com/firebase/firebaseui-web) (GitHub)
-- [Introduction to the Admin Auth API](https://firebase.google.com/docs/auth/admin/) (Firebase docs)
-
+- Firebase docs
+   - [Easily add sign-in to your Web app with FirebaseUI](https://firebase.google.com/docs/auth/web/firebaseui)
+   - [Introduction to the Admin Auth API](https://firebase.google.com/docs/auth/admin/)
+   - [Add the Firebase Admin SDK to Your Server](https://firebase.google.com/docs/admin/setup/)
+    
 CICP really is mostly Firebase UI/auth.
-

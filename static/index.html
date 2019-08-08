@@ -85,6 +85,14 @@
     //googleProvider.addScope('email');
   ***/
 
+  // Based on https://firebase.google.com/docs/auth/web/microsoft-oauth
+  //
+  const msProvider = new firebase.auth.OAuthProvider('microsoft.com');
+    //
+    //msProvider.setCustomParameters({    // you may or may not want these (optional)
+    //  prompt: 'consent'
+    //});
+
   // Info on options -> https://github.com/firebase/firebaseui-web#configuration
   //
   const uiConfig = {
@@ -99,6 +107,25 @@
         clientId: CLIENT_ID
       },*/
       firebase.auth.GoogleAuthProvider.PROVIDER_ID,
+
+      // Microsoft
+      //
+      // "You can let your users authenticate with FirebaseUI using OAuth providers like Microsoft Azure Active
+      // Directory and Yahoo by integrating generic OAuth Login into your app."
+      //    source: https://github.com/firebase/firebaseui-web#generic-oauth-provider
+      //
+      //
+      // Microsoft login is supported as "generic". No "...PROVIDER_ID' for it.
+      //
+      // FirebaseUI 3.6 has them: source -> https://github.com/firebase/firebaseui-web/issues/568
+      // This demo has it: https://fir-ui-demo-84a6c.firebaseapp.com
+      //
+      {
+        provider: 'microsoft.com',
+        providerName: 'Microsoft',
+        buttonColor: '#2F2F2F',
+        iconUrl: './ms-symbollockup_mssymbol_19.svg'
+      },
 
       // Don't have Facebook account.
       /* disabled

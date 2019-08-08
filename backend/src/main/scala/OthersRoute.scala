@@ -7,7 +7,7 @@ import tools.AnyRoute
 
 trait OthersRoute extends AnyRoute with FailFastCirceSupport {
   import OthersRoute._
-  
+
   protected def addMe(o: UserInfo): Unit
   protected def gimmeAll(): Set[UserInfo]
 

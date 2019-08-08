@@ -5,6 +5,7 @@ import java.util.concurrent.CompletableFuture
 import akka.http.scaladsl.server.directives.{AuthenticationDirective, Credentials}
 import akka.http.scaladsl.server.Directives._
 import com.google.firebase.auth.{FirebaseAuth, FirebaseToken}
+import com.typesafe.scalalogging.LazyLogging
 
 import scala.concurrent.Future
 import scala.compat.java8.FutureConverters
@@ -19,7 +20,7 @@ import scala.compat.java8.FutureConverters
 *     "You can also use the service to identify these users on your own server. This lets you securely perform
 *     server-side logic on behalf of users that have signed in with Firebase Authentication."
 */
-object FirebaseAuthenticator {
+object FirebaseAuthenticator extends LazyLogging {
   import scala.concurrent.ExecutionContext.Implicits.global
 
   // The directive used in routes. Named according to other Akka HTTP directives (e.g. 'authenticateBasic[Async]').
@@ -30,6 +31,10 @@ object FirebaseAuthenticator {
       case Credentials.Missing => Future.successful(None)
       case Credentials.Provided(token) =>
         fba.verifyIdTokenAsync(token).asScala
+          .map { fbt =>   // tbd. use '.wireTap' when/if becomes available
+            logger.debug(s"Authenticated: ${fbt.getUid}")
+            fbt
+          }
           .map( Some(_) )
     } )
   }
