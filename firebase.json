@@ -7,13 +7,25 @@
     "ignore": [
       "firebase.json",
       "**/.*",
-      "**/node_modules/**"
+      "**/node_modules/**",
+      "devs/",
+      "backend/",
+      ".images/",
+      "*.md",
+      "server.js"
     ],
     "rewrites": [
       {
         "source": "**",
         "destination": "/index.html"
-      }
+      },
+      {
+        "source": "/backend",
+        "run": {
+          "serviceId": "my-awesome-api",
+          // Optional (default is us-central1)
+          "region": "us-central1",
+        },
     ]
   }
 }

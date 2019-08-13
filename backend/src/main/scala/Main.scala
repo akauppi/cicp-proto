@@ -4,10 +4,13 @@ import akka.actor.ActorSystem
 import akka.http.scaladsl.Http
 import akka.http.scaladsl.server.Route
 import akka.stream.{ActorMaterializer, Materializer}
+import backend.tools.AnyRoute
 import com.typesafe.scalalogging.LazyLogging
 
 import scala.collection.mutable
 import com.google.firebase.FirebaseApp
+
+import akka.http.scaladsl.server.Directives._
 
 /*
 */
@@ -28,6 +31,8 @@ object Main extends App with LazyLogging {
     } ~
     new ForgetRoute{
       override def forgetMe(o: UserInfo) = mmap.remove(o.uid)
+    } ~ (get & path("ping")) {    // for health check
+      complete("pong")
     }
 
   val app: FirebaseApp = FirebaseApp.initializeApp()  // steer with 'FIREBASE_CONFIG' env.var if needed;

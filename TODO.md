@@ -8,10 +8,6 @@
 
 ## Frontend
 
-- Add [Microsoft](https://firebase.google.com/docs/auth/web/microsoft-oauth)
-  
-   - This seems to need creation of a new Azure account (my existing @outlook.com identity is not enough to create an app); leaving it for now. Contributions welcome!!
-      
 - Test "One tap sign up": https://developers.google.com/identity/one-tap/web/
   - follow-up availability; currently says "beta ended" (Aug 2019)
 
@@ -20,22 +16,9 @@
 - Tests. It's bad example to not make such. `cd backend; sbt test` should check that the backend works. (contributions welcome! 🤩
  
  
+## CI/CD
 
-<!-- disabled (bring back if non-empty)
-## Bugs
+- Once have access to GitHub Actions beta, do with it.
+[link](https://github.com/features/actions)
 
-<!_-- tbd. likely fixed?
-- The static server sometimes fails:
 
-   ```
-Serving static pages on port 8081
-/Users/asko/Git/cicp-proto/node_modules/serve-static/index.js:121
-      next()
-      ^
-   ```
-
-   Use some other arrangement than `static-server` npm module?
--->
-
-   
-   

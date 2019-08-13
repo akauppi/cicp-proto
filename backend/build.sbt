@@ -46,3 +46,5 @@ libraryDependencies ++= Seq(
     //
   scalaTest
 )
+
+enablePlugins(JavaAppPackaging)

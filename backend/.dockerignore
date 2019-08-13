@@ -1,0 +1,9 @@
+#
+# backend/.dockerignore
+#
+# NOTE: Not sure that Docker builds respect inner `.dockerignore` files. This is the intention, nonetheless:
+#       root project builds the Docker image but we can tell what should be left out. :)
+#
+
+# hmm... Does Docker build respect the .gitignore?  That has us covered.
+

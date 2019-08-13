@@ -278,7 +278,69 @@ $ cd backend
 $ sbt stage
 ...
 $ docker build .
+...
+Successfully built 636ee78b45ea
 ```
+
+We should now have a Docker image of the backend. Try to run it locally by:
+
+```
+$ docker run -p 8083:8083 -e PORT=8083 636ee78b45ea
+```
+
+This will fail, stating something about `GOOGLE_APPLICATION_CREDENTIALS` env.var. It's certainly feeling lonelier than when executed from plain command line (which works, for some reason).
+
+Anyway, let's rush through that 🏃‍♀️🏃‍♂️ and try to bring the image to the cloud. It will likely feel just fine, there. 
+
+**Push the docker image**
+
+We're going to use [Google Cloud Run](https://cloud.google.com/run/) which is [compatible with Firebase](https://firebase.googleblog.com/2019/04/firebase-hosting-and-cloud-run.html) since April 2019.
+
+The following steps are based on the [official guide](https://firebase.google.com/docs/hosting/cloud-run) (Firebase docs). You can skim here, but if in doubt, check that for reference.
+
+1. Enable Cloud Run in GCP console for your project (see [here](https://firebase.google.com/docs/hosting/cloud-run#enable-install-API)).
+2. Install and initialize `gcloud` (tbd. mention in requirements that `gcloud` is needed)
+   >Note: When installing `gcloud` on macOS, it tends to install "in place", so be careful where you are running it!
+
+3. Install the "beta component":
+
+   ```
+   $ gcloud components install beta
+   $ gcloud components update
+   ```
+
+4. Check that the right project is picked:
+
+   ```
+   $ gcloud config list
+   ...
+   project = cicp-proto-xyz     # looks familiar?
+   ...
+   ```
+
+5. Build the backend
+
+   ```
+   $ gcloud builds submit --tag gcr.io/<your-project-id>/backend
+   ```
+   
+   Note: Though the backend code is in `backend/`, we've left the `Dockerfile` in the root.
+
+   
+
+---
+
+
+---
+
+
+
+
+
+
+
+
+The docker ID will depend on your build. 
 
 
 
@@ -333,5 +395,6 @@ That means we can do some kind of roles management with Firebase (who can access
    - [Easily add sign-in to your Web app with FirebaseUI](https://firebase.google.com/docs/auth/web/firebaseui)
    - [Introduction to the Admin Auth API](https://firebase.google.com/docs/auth/admin/)
    - [Add the Firebase Admin SDK to Your Server](https://firebase.google.com/docs/admin/setup/)
-    
+   - [Serve dynamic content and host microservices with Cloud Run](https://firebase.google.com/docs/hosting/cloud-run)
+
 CICP really is mostly Firebase UI/auth.

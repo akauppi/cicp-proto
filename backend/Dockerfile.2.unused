@@ -1,0 +1,47 @@
+#
+# Usage:
+#   sbt stage
+#   docker build .
+#
+
+#---
+# Note:
+#   Google has preferred images for Java runtime[1], but they are actually `jdk-headless`[2] (is that a JRE or JDK
+#   or does it no longer matter??)
+#
+#   [1]: https://github.com/GoogleCloudPlatform/openjdk-runtime
+#   [2]: https://github.com/GoogleCloudPlatform/openjdk-runtime/blob/master/openjdk8/src/main/docker/Dockerfile#L28
+#
+#   Google are clear that:
+#   <<
+#       This image can be used as the base image for running Java applications on Google App Engine Flexible Environment
+#       and Google Kubernetes Engine.
+#   <<
+#
+#   These lack a bit behind in versions. Java 9 is latest (8-Aug-2019), with Java 11 in beta.
+#
+FROM gcr.io/google-appengine/openjdk:9
+
+LABEL maintainer="akauppi+nospam@gmail.com"
+
+# IMPORTANT: Keep this named the same as the project in 'build.sbt'.
+#
+ENV _PROJ backend
+
+# Overruns the service's configuration (actually defines the port)
+#
+ENV PORT 8080
+
+# Note: '--chown=..' trick from https://www.codemunity.io/tutorials/dockerising-akka-http/
+#
+ADD --chown=daemon:daemon target/universal/stage /app
+
+WORKDIR /app
+USER daemon
+
+# This is largely commentary - or is it fully legacy? (Aug-2019)
+#EXPOSE 8080
+
+# Note: 'exec' makes the container respond to Ctrl-C (even without '--init').
+#
+CMD exec bin/${_PROJ}
